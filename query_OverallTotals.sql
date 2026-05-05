@@ -1,0 +1,3 @@
+SELECT "Totals" AS [Overall Totals], [cstotal]+[itotal]+[total of id]+[astotal] AS total, [csjan]+[ijan]+[jan1]+[asjan] AS jan, [csfeb]+[ifeb]+[feb1]+[asfeb] AS feb, [csmar]+[imar]+[mar1]+[asmar] AS mar, [csapr]+[iapr]+[apr1]+[asmar] AS apr, [csmay]+[imay]+[may1]+[asmar] AS may, [csjun]+[ijun]+[jun1]+[asjun] AS jun, [csjul]+[ijul]+[jul1]+[asjul] AS jul, [csaug]+[iaug]+[aug1]+[asaug] AS aug, [cssep]+[isep]+[sep1]+[assep] AS sep, [csoct]+[ioct]+[oct1]+[asoct] AS oct, [csnov]+[inov]+[nov1]+[asnov] AS nov, [csdec]+[idec]+[dec1]+[asdec] AS [dec]
+FROM CommunitySafetyTotals, IncidentTotals, [RadioLink_crosstab Query], AntiSocialTotals;
+

@@ -1,0 +1,3 @@
+SELECT Sum([IncidentDetails_Crosstab Query].[Total Of ID1]) AS itotal, Sum([IncidentDetails_Crosstab Query].Jan1) AS ijan, Sum([IncidentDetails_Crosstab Query].Feb1) AS ifeb, Sum([IncidentDetails_Crosstab Query].Mar1) AS imar, Sum([IncidentDetails_Crosstab Query].Apr1) AS iapr, Sum([IncidentDetails_Crosstab Query].May1) AS imay, Sum([IncidentDetails_Crosstab Query].Jun1) AS ijun, Sum([IncidentDetails_Crosstab Query].Jul1) AS ijul, Sum([IncidentDetails_Crosstab Query].Aug1) AS iaug, Sum([IncidentDetails_Crosstab Query].Sep1) AS isep, Sum([IncidentDetails_Crosstab Query].Oct1) AS ioct, Sum([IncidentDetails_Crosstab Query].Nov1) AS inov, Sum([IncidentDetails_Crosstab Query].Dec1) AS idec
+FROM [IncidentDetails_Crosstab Query];
+
