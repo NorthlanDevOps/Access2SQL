@@ -1,0 +1,75 @@
+@page
+@using WebApp.Pages.Admin.Operators
+@model OperatorsIndexModel
+@{
+    ViewData["Title"] = "Manage Operators";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>Operators</h1>
+        <p class="subtitle">Manage CCTV operators and their details</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <div style="flex: 1;">
+            <form method="get" style="display: flex; gap: 12px;">
+                <input type="search" name="searchString" placeholder="Search operators..." 
+                       value="@Model.SearchString" style="flex: 1; max-width: 300px;" />
+                <button type="submit" class="btn btn-primary">Search</button>
+                @if (!string.IsNullOrEmpty(Model.SearchString))
+                {
+                    <a href="/Admin/Operators/Index" class="btn">Clear</a>
+                }
+            </form>
+        </div>
+        <a href="/Admin/Operators/Create" class="btn btn-primary">+ New Operator</a>
+    </div>
+
+    @if (Model.Operators != null && Model.Operators.Any())
+    {
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Employee ID</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var op in Model.Operators)
+                    {
+                        <tr>
+                            <td>@op.Name</td>
+                            <td>@(op.EmployeeId ?? "-")</td>
+                            <td>@(op.Email ?? "-")</td>
+                            <td>
+                                <span class="status-badge @(op.Active ? "active" : "inactive")">
+                                    @(op.Active ? "Active" : "Inactive")
+                                </span>
+                            </td>
+                            <td>
+                                <div style="display: flex; gap: 8px;">
+                                    <a href="/Admin/Operators/Edit?id=@op.Id" class="btn btn-sm">Edit</a>
+                                    <a href="/Admin/Operators/Index?handler=delete&id=@op.Id" class="btn btn-sm btn-danger" 
+                                       onclick="return confirm('Are you sure you want to delete this operator?');">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div style="padding: 40px; text-align: center; color: #666;">
+            <p>No operators found. <a href="/Admin/Operators/Create">Create one</a></p>
+        </div>
+    }
+</main>

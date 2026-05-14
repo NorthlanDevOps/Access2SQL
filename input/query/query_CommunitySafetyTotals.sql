@@ -1,0 +1,3 @@
+SELECT Sum([CommunitySafety_Crosstab Query].[Total Of ID1]) AS cstotal, Sum([CommunitySafety_Crosstab Query].Jan1) AS csjan, Sum([CommunitySafety_Crosstab Query].Feb1) AS csfeb, Sum([CommunitySafety_Crosstab Query].Mar1) AS csmar, Sum([CommunitySafety_Crosstab Query].Apr1) AS csapr, Sum([CommunitySafety_Crosstab Query].May1) AS csmay, Sum([CommunitySafety_Crosstab Query].Jun1) AS csjun, Sum([CommunitySafety_Crosstab Query].Jul1) AS csjul, Sum([CommunitySafety_Crosstab Query].Aug1) AS csaug, Sum([CommunitySafety_Crosstab Query].Sep1) AS cssep, Sum([CommunitySafety_Crosstab Query].Oct1) AS csoct, Sum([CommunitySafety_Crosstab Query].Nov1) AS csnov, Sum([CommunitySafety_Crosstab Query].Dec1) AS csdec
+FROM [CommunitySafety_Crosstab Query];
+

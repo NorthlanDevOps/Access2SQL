@@ -1,0 +1,53 @@
+@page
+@using WebApp.Pages.Admin
+@model AdminIndexModel
+@{
+    ViewData["Title"] = "Administration";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>Administration</h1>
+        <p class="subtitle">Manage reference data and system settings</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div class="dashboard-grid">
+        <a href="/Admin/Areas" class="dashboard-card">
+            <div class="card-icon">📍</div>
+            <h2>Areas</h2>
+            <p>Manage geographic areas</p>
+        </a>
+
+        <a href="/Admin/Operators" class="dashboard-card">
+            <div class="card-icon">👤</div>
+            <h2>Operators</h2>
+            <p>Manage CCTV operators</p>
+        </a>
+
+        <a href="/Admin/Watches" class="dashboard-card">
+            <div class="card-icon">⏰</div>
+            <h2>Watches</h2>
+            <p>Manage watch periods</p>
+        </a>
+
+        <a href="/Admin/IncidentTypes" class="dashboard-card">
+            <div class="card-icon">🏷️</div>
+            <h2>Incident Types</h2>
+            <p>Manage incident categories</p>
+        </a>
+
+        <a href="/Admin/Results" class="dashboard-card">
+            <div class="card-icon">✓</div>
+            <h2>Results</h2>
+            <p>Manage incident outcomes</p>
+        </a>
+
+        <a href="/Admin/Sources" class="dashboard-card">
+            <div class="card-icon">📢</div>
+            <h2>Sources</h2>
+            <p>Manage incident sources</p>
+        </a>
+    </div>
+</main>

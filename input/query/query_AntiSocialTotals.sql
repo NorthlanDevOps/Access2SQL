@@ -1,0 +1,3 @@
+SELECT Sum([AntiSocial_Crosstab Query].[Total Of ID1]) AS astotal, Sum([AntiSocial_Crosstab Query].Jan1) AS asjan, Sum([AntiSocial_Crosstab Query].Feb1) AS asfeb, Sum([AntiSocial_Crosstab Query].Mar1) AS asmar, Sum([AntiSocial_Crosstab Query].Apr1) AS asapr, Sum([AntiSocial_Crosstab Query].May1) AS asmay, Sum([AntiSocial_Crosstab Query].Jun1) AS asjun, Sum([AntiSocial_Crosstab Query].Jul1) AS asjul, Sum([AntiSocial_Crosstab Query].Aug1) AS asaug, Sum([AntiSocial_Crosstab Query].Sep1) AS assep, Sum([AntiSocial_Crosstab Query].Oct1) AS asoct, Sum([AntiSocial_Crosstab Query].Nov1) AS asnov, Sum([AntiSocial_Crosstab Query].Dec1) AS asdec
+FROM [AntiSocial_Crosstab Query];
+

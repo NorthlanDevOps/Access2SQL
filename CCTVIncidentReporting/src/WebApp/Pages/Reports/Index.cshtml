@@ -1,0 +1,103 @@
+@page
+@using WebApp.Pages.Reports
+@model ReportsIndexModel
+@{
+    ViewData["Title"] = "Reports";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>Incident Reports</h1>
+        <p class="subtitle">View incident analytics and statistics</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px;">
+        <div style="background: white; border: 1px solid #d0d7de; border-radius: 6px; padding: 24px; text-align: center;">
+            <div style="font-size: 32px; font-weight: 600; color: #0969da;">@Model.TotalIncidents</div>
+            <div style="color: #57606a; margin-top: 8px;">Total Incidents</div>
+        </div>
+
+        <div style="background: white; border: 1px solid #d0d7de; border-radius: 6px; padding: 24px; text-align: center;">
+            <div style="font-size: 32px; font-weight: 600; color: #0969da;">@Model.ThisMonthIncidents</div>
+            <div style="color: #57606a; margin-top: 8px;">This Month</div>
+        </div>
+
+        <div style="background: white; border: 1px solid #d0d7de; border-radius: 6px; padding: 24px; text-align: center;">
+            <div style="font-size: 32px; font-weight: 600; color: #0969da;">@Model.UniqueAreas</div>
+            <div style="color: #57606a; margin-top: 8px;">Areas</div>
+        </div>
+
+        <div style="background: white; border: 1px solid #d0d7de; border-radius: 6px; padding: 24px; text-align: center;">
+            <div style="font-size: 32px; font-weight: 600; color: #0969da;">@Model.ActiveOperators</div>
+            <div style="color: #57606a; margin-top: 8px;">Active Operators</div>
+        </div>
+    </div>
+
+    <section style="background: white; border: 1px solid #d0d7de; border-radius: 6px; padding: 24px; margin-bottom: 40px;">
+        <h2 style="margin-bottom: 20px;">Incidents by Type</h2>
+        @if (Model.IncidentsByType != null && Model.IncidentsByType.Any())
+        {
+            <div class="incidents-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th style="text-align: right;">Count</th>
+                            <th style="text-align: right;">Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var total = Model.IncidentsByType.Sum(x => x.Value);
+                        }
+                        @foreach (var item in Model.IncidentsByType)
+                        {
+                            var percentage = ((double)item.Value / total * 100);
+                            <tr>
+                                <td>@item.Key</td>
+                                <td style="text-align: right;">@item.Value</td>
+                                <td style="text-align: right;">@percentage.ToString("F1")%</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p class="empty-state">No data available.</p>
+        }
+    </section>
+
+    <section style="background: white; border: 1px solid #d0d7de; border-radius: 6px; padding: 24px;">
+        <h2 style="margin-bottom: 20px;">Incidents by Area</h2>
+        @if (Model.IncidentsByArea != null && Model.IncidentsByArea.Any())
+        {
+            <div class="incidents-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Area</th>
+                            <th style="text-align: right;">Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.IncidentsByArea.OrderByDescending(x => x.Value))
+                        {
+                            <tr>
+                                <td>@item.Key</td>
+                                <td style="text-align: right;">@item.Value</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p class="empty-state">No data available.</p>
+        }
+    </section>
+</main>

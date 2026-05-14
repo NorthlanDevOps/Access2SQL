@@ -1,0 +1,45 @@
+@page
+@using WebApp.Pages.Admin.Results
+@model EditModel
+@{
+    ViewData["Title"] = "Edit Result";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>Edit Result</h1>
+        <p class="subtitle">Update result details</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="max-width: 600px;">
+        <form method="post">
+            <input type="hidden" asp-for="IncidentResult.Id" />
+
+            <div class="form-group">
+                <label asp-for="IncidentResult.Name">Name *</label>
+                <input asp-for="IncidentResult.Name" type="text" required />
+                <span asp-validation-for="IncidentResult.Name" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IncidentResult.Description">Description</label>
+                <textarea asp-for="IncidentResult.Description"></textarea>
+                <span asp-validation-for="IncidentResult.Description" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" asp-for="IncidentResult.Active" />
+                    Active
+                </label>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 24px;">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a href="/Admin/Results/Index" class="btn">Cancel</a>
+            </div>
+        </form>
+    </div>
+</main>

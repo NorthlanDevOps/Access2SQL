@@ -1,0 +1,73 @@
+@page
+@using WebApp.Pages.Admin.Results
+@model ResultsIndexModel
+@{
+    ViewData["Title"] = "Manage Results";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>Results</h1>
+        <p class="subtitle">Manage incident outcomes and resolutions</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <div style="flex: 1;">
+            <form method="get" style="display: flex; gap: 12px;">
+                <input type="search" name="searchString" placeholder="Search results..." 
+                       value="@Model.SearchString" style="flex: 1; max-width: 300px;" />
+                <button type="submit" class="btn btn-primary">Search</button>
+                @if (!string.IsNullOrEmpty(Model.SearchString))
+                {
+                    <a href="/Admin/Results/Index" class="btn">Clear</a>
+                }
+            </form>
+        </div>
+        <a href="/Admin/Results/Create" class="btn btn-primary">+ New Result</a>
+    </div>
+
+    @if (Model.Results != null && Model.Results.Any())
+    {
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var result in Model.Results)
+                    {
+                        <tr>
+                            <td>@result.Name</td>
+                            <td>@(result.Description ?? "-")</td>
+                            <td>
+                                <span class="status-badge @(result.Active ? "active" : "inactive")">
+                                    @(result.Active ? "Active" : "Inactive")
+                                </span>
+                            </td>
+                            <td>
+                                <div style="display: flex; gap: 8px;">
+                                    <a href="/Admin/Results/Edit?id=@result.Id" class="btn btn-sm">Edit</a>
+                                    <a href="/Admin/Results/Index?handler=delete&id=@result.Id" class="btn btn-sm btn-danger" 
+                                       onclick="return confirm('Are you sure you want to delete this result?');">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div style="padding: 40px; text-align: center; color: #666;">
+            <p>No results found. <a href="/Admin/Results/Create">Create one</a></p>
+        </div>
+    }
+</main>

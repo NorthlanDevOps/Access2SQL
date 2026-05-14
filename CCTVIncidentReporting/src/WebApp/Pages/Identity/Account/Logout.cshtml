@@ -1,0 +1,19 @@
+@page
+@using WebApp.Pages.Identity.Account
+@model LogoutModel
+@{
+    ViewData["Title"] = "Logout";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>Logout</h1>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="background: white; padding: 40px; border-radius: 8px; text-align: center;">
+        <p style="margin-bottom: 20px;">You have been logged out successfully.</p>
+        <a href="/Identity/Account/Login" class="btn btn-primary">Return to Login</a>
+    </div>
+</main>

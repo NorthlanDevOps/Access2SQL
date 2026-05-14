@@ -1,0 +1,105 @@
+@page
+@using WebApp.Pages.Incidents
+@model AllModel
+@{
+    ViewData["Title"] = "All Incidents";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>All Incidents</h1>
+        <p class="subtitle">Complete incident database</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <form method="get" style="display: flex; gap: 8px;">
+                <input type="search" name="searchString" placeholder="Search incidents..." 
+                       value="@Model.SearchString" style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px;" />
+                <select name="filterType" style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px;">
+                    <option value="">All Status</option>
+                    @if (Model.FilterType == "pending")
+                    {
+                        <option value="pending" selected>Pending</option>
+                    }
+                    else
+                    {
+                        <option value="pending">Pending</option>
+                    }
+                    @if (Model.FilterType == "confirmed")
+                    {
+                        <option value="confirmed" selected>Confirmed</option>
+                    }
+                    else
+                    {
+                        <option value="confirmed">Confirmed</option>
+                    }
+                </select>
+                <button type="submit" class="btn btn-primary">Filter</button>
+                @if (!string.IsNullOrEmpty(Model.SearchString) || !string.IsNullOrEmpty(Model.FilterType))
+                {
+                    <a href="/Incidents/All" class="btn">Clear</a>
+                }
+            </form>
+        </div>
+        <a href="/Incidents/Create" class="btn btn-primary">+ New Incident</a>
+    </div>
+
+    @if (Model.Incidents != null && Model.Incidents.Any())
+    {
+        <div style="margin-bottom: 12px; color: #666;">
+            Showing @Model.Incidents.Count incident(s)
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Area</th>
+                        <th>Watch</th>
+                        <th>Operator</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var incident in Model.Incidents)
+                    {
+                        <tr>
+                            <td>@incident.Date.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>@incident.IncidentType</td>
+                            <td>@incident.Area</td>
+                            <td>@incident.Watch</td>
+                            <td>@incident.Operator</td>
+                            <td>
+                                @if (string.IsNullOrEmpty(incident.Action))
+                                {
+                                    <span style="color: #f44; font-weight: bold;">Pending</span>
+                                }
+                                else
+                                {
+                                    <span style="color: #0a0;">Confirmed</span>
+                                }
+                            </td>
+                            <td>
+                                <div style="display: flex; gap: 8px;">
+                                    <a href="/Incidents/Details?id=@incident.Id" class="btn btn-sm">View</a>
+                                    <a href="/Incidents/Edit?id=@incident.Id" class="btn btn-sm">Edit</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div style="padding: 40px; text-align: center; color: #666;">
+            <p>No incidents found.</p>
+        </div>
+    }
+</main>

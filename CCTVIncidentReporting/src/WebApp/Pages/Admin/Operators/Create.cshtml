@@ -1,0 +1,42 @@
+@page
+@using WebApp.Pages.Admin.Operators
+@model CreateModel
+@{
+    ViewData["Title"] = "Create Operator";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>Create Operator</h1>
+        <p class="subtitle">Add a new CCTV operator</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="max-width: 600px;">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Operator.Name">Name *</label>
+                <input asp-for="Operator.Name" type="text" required placeholder="e.g., John Smith" />
+                <span asp-validation-for="Operator.Name" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Operator.EmployeeId">Employee ID</label>
+                <input asp-for="Operator.EmployeeId" type="text" placeholder="e.g., EMP001" />
+                <span asp-validation-for="Operator.EmployeeId" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Operator.Email">Email</label>
+                <input asp-for="Operator.Email" type="email" placeholder="e.g., john@@example.com" />
+                <span asp-validation-for="Operator.Email" class="validation-error"></span>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 24px;">
+                <button type="submit" class="btn btn-primary">Create Operator</button>
+                <a href="/Admin/Operators/Index" class="btn">Cancel</a>
+            </div>
+        </form>
+    </div>
+</main>

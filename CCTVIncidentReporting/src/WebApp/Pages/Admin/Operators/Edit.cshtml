@@ -1,0 +1,51 @@
+@page
+@using WebApp.Pages.Admin.Operators
+@model EditModel
+@{
+    ViewData["Title"] = "Edit Operator";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>Edit Operator</h1>
+        <p class="subtitle">Update operator details</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="max-width: 600px;">
+        <form method="post">
+            <input type="hidden" asp-for="Operator.Id" />
+
+            <div class="form-group">
+                <label asp-for="Operator.Name">Name *</label>
+                <input asp-for="Operator.Name" type="text" required />
+                <span asp-validation-for="Operator.Name" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Operator.EmployeeId">Employee ID</label>
+                <input asp-for="Operator.EmployeeId" type="text" />
+                <span asp-validation-for="Operator.EmployeeId" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Operator.Email">Email</label>
+                <input asp-for="Operator.Email" type="email" />
+                <span asp-validation-for="Operator.Email" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" asp-for="Operator.Active" />
+                    Active
+                </label>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 24px;">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a href="/Admin/Operators/Index" class="btn">Cancel</a>
+            </div>
+        </form>
+    </div>
+</main>

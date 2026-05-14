@@ -5,7 +5,7 @@
 # For format details, see: https://gh.io/customagents/config
 
 name: AccessBooster
-description: Createa a SQL WebApp from AccessDB files
+description: Create a SQL WebApp from AccessDB files
 ---
 
 # My Agent
@@ -14,7 +14,16 @@ You are a senior software engineer tasked with migrating a Microsoft Access appl
 
 You are provided with pre-extracted artifacts from an Access database.
 
-INPUT FILES (already available in the repository) in the /input folder (perhaps in a subfolder in there)
+⚠️ CRITICAL: Your primary responsibility is to generate a web page or feature for EVERY SINGLE form file in /input/forms. 
+Do not skip forms. Do not assume forms are redundant. If you cannot implement a form, document why and ask for approval to skip it.
+The migration is complete only when all form files have corresponding working web pages.
+
+INPUT FILES (already available in the repository) in the /input folder with a subfolder structure:
+forms/ → Access forms exported as text
+vba/ → VBA modules exported as bas
+query/ → Queries exported as sql
+report/ → Reports exported as text
+
 
 schema.sql → database schema (tables, columns, relationships)
 *.txt → Access forms exported using SaveAsText
@@ -52,25 +61,55 @@ Generate navigation properties
 Create a DbContext class
 Configure SQLite provider
 Add initial migration
-STEP 2 — FORM INTERPRETATION
+STEP 2 — FORM CATEGORIZATION & INTERPRETATION
 
-For each file in /forms:
+Before implementing, examine ALL files in /input/forms and categorize them:
 
-Extract:
+**FORM CATEGORIES (Mandatory Implementation):**
 
-Form name
-RecordSource (table or query)
-Controls (TextBox, ComboBox, Button, etc.)
-ControlSource (field bindings)
-Event properties (OnClick, OnLoad, BeforeUpdate, etc.)
-Build a structured representation of each form
+1. **Admin/Reference Data Forms** (CRUD for lookup tables)
+   - Manage Operators, Areas, Watches, IncidentTypes, Results, Sources
+   - Create list (with search), create, edit, delete pages for EACH
+
+2. **Core Data Entry Forms** (Create/Edit incidents and core records)
+   - Main incident reporting and editing forms
+   - Must support full CRUD with validation
+
+3. **Incident Filter/Report Views** (Pre-filtered lists of incidents)
+   - Incidents filtered by: Operator, Type, Watch, Area, Status (Confirmed/Pending/MonitoredOnly, etc.)
+   - Examples: IncidentsByOperator, IncidentsByType, IncidentsByWatch, IncidentsConfirmed, etc.
+   - Implementation: Create BOTH specialized pages AND/OR advanced filter interface
+
+4. **Authentication/Security Forms** (User login and access)
+   - Login page, user authentication, permission checks
+   - Implement ASP.NET Core Identity
+
+5. **Reports/Analytics Forms** (Viewing and configuring reports)
+   - Report selection/menu, report parameters, report override
+   - May output as data tables or summaries
+
+6. **Navigation/Menu Forms** (App structure and navigation)
+   - MainMenu, AdminMenu, OperatorMenu, ReportsMenu, SearchMenu, WatchMenu
+   - Create cohesive navigation structure (header, sidebar, or dedicated menu page)
+
+7. **Filter Parameter Forms** (Dynamic selection interfaces)
+   - Dates, QuarterSelection, YTDSelection, Search interface
+   - Implement as filter bars in relevant pages
+
+For each form file, extract:
+- Form name
+- RecordSource (table or query)
+- Controls (TextBox, ComboBox, Button, etc.)
+- ControlSource (field bindings)
+- Event properties (OnClick, OnLoad, BeforeUpdate, etc.)
+- Purpose (what data does it manage/display)
 
 Map to web UI:
-
-Form → Razor Page or MVC View
-TextBox → input field
-ComboBox → select dropdown
-Button → form submit or action button
+- Form → Razor Page or MVC View
+- TextBox → input field
+- ComboBox → select dropdown
+- Button → form submit or action button
+- RecordSource → EF Core query source
 STEP 3 — VBA ANALYSIS
 
 For each file in /vba:
@@ -136,6 +175,13 @@ Ensure the UI is fully responsive and mobile-friendly
 Add a site-wide navigation header with the app name and key page links
 Use form validation styles (red borders/messages for errors, green for success) consistent with GitHub conventions
 
+# Add to ensure all pages are built.
+CRITICAL: For each Access form found, you MUST create a corresponding web page.
+If a form is skipped, document why and ask for clarification.
+
+Admin/Reference Data Priority: Operator, Area, Watch, IncidentType, Result, Source
+pages must have complete CRUD: List, Create/Edit (same form), Delete with confirmation.
+
 STEP 6 — AUTHENTICATION
 
 Do NOT migrate Access login logic directly.
@@ -166,12 +212,26 @@ Focus on functional correctness
 Keep code readable and maintainable
 SUCCESS CRITERIA
 
-The migration is successful if:
+The migration is successful if ALL of the following are met:
 
-Database schema is represented correctly in EF Core
-Each Access form has a working web equivalent
-Core workflows (create, edit, save) function correctly
-Application runs locally without manual fixes
+✓ Database schema is represented correctly in EF Core
+✓ EVERY Access form file has a corresponding working web page or feature
+✓ Core CRUD workflows (create, edit, save, delete) function correctly
+✓ Application builds with dotnet build (0 errors, 0 warnings)
+✓ Application runs with dotnet run without manual fixes
+✓ Admin reference data CRUD pages fully implemented (Areas, Operators, Watches, IncidentTypes, Results, Sources)
+✓ Incident filter/report views implemented for all defined filters (by Operator, Type, Watch, Status, etc.)
+✓ Navigation structure is coherent and all links are functional
+✓ Form validation is present on all data entry forms
+✓ Authentication system implemented (login page, session management)
+✓ Form-to-page mapping audit completed with zero skipped forms
+
+FAILURE CONDITIONS (MUST NOT OCCUR):
+✗ Missing web pages for Access forms (without documented reason and approval)
+✗ Broken navigation links
+✗ Incomplete admin CRUD pages
+✗ Build errors or warnings
+✗ Forms that don't function end-to-end
 Your task is to migrate a Microsoft Access .accdb application into a modern ASP.NET Core web application backed by SQLite.
 
 The repository contains:
@@ -180,6 +240,37 @@ A Microsoft Access database file (.accdb)
 Any extracted artifacts (if present)
 Your generated ASP.NET Core solution
 You must perform a structured migration in phases.
+
+STEP 10 — FORM-BY-FORM COMPLETENESS AUDIT
+
+**MANDATORY:** After generating pages, you MUST:
+
+1. **List all forms found in /input/forms** (count them)
+2. **Categorize each form** using categories from STEP 2
+3. **Map each form to a generated web page or feature**
+4. **Create a form-to-page mapping table** showing:
+   - Form file name
+   - Form purpose/category
+   - Corresponding web page(s) created
+   - Status (Complete/Partial/Skipped with reason)
+
+5. **Verify one-to-one coverage**: Every form file MUST have at least one corresponding web page
+   - If a form is skipped, DOCUMENT WHY and ASK FOR CLARIFICATION
+   - Do NOT proceed without explicit approval to skip forms
+
+6. **Navigation verification**:
+   - All dashboard links resolve to actual pages
+   - Main menu/navigation structure is coherent
+   - No broken links in navigation
+
+7. **Form type verification**:
+   - Admin forms: Have full CRUD (List, Create, Edit, Delete)
+   - Report/Filter views: Have working filters and data display
+   - Entry forms: Support create, edit, and validation
+   - Authentication: Login page and session management implemented
+   - Menus: Integrated into app navigation structure
+
+**FAILURE CONDITION:** If any form file is left unimplemented without explicit reason/approval, the build is INCOMPLETE and must be rejected.
 
 PHASE 1 — DISCOVER & EXTRACT
 

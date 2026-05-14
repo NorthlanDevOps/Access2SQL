@@ -1,0 +1,72 @@
+@page
+@using WebApp.Pages.Incidents
+@model IncidentsIndexModel
+@{
+    ViewData["Title"] = "All Incidents";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>All Incidents</h1>
+        <p class="subtitle">View and manage all reported incidents</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <div style="flex: 1;">
+            <form method="get" style="display: flex; gap: 12px;">
+                <input type="search" name="searchString" placeholder="Search incidents..." 
+                       value="@Model.SearchString" style="flex: 1; max-width: 300px;" />
+                <button type="submit" class="btn btn-primary">Search</button>
+                @if (!string.IsNullOrEmpty(Model.SearchString))
+                {
+                    <a href="/Incidents/Index" class="btn">Clear</a>
+                }
+            </form>
+        </div>
+        <a href="/Incidents/Create" class="btn btn-primary">+ New Incident</a>
+    </div>
+
+    @if (Model.Incidents != null && Model.Incidents.Any())
+    {
+        <div class="incidents-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Area</th>
+                        <th>Watch</th>
+                        <th>Operator</th>
+                        <th>Sub Area</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var incident in Model.Incidents)
+                    {
+                        <tr>
+                            <td>@incident.Date.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td><span class="badge">@incident.IncidentType</span></td>
+                            <td>@incident.Area</td>
+                            <td>@incident.Watch</td>
+                            <td>@incident.Operator</td>
+                            <td>@incident.SubArea</td>
+                            <td>
+                                <a href="/Incidents/Details/@incident.Id" class="btn" style="padding: 4px 8px; font-size: 12px;">View</a>
+                                <a href="/Incidents/Edit/@incident.Id" class="btn" style="padding: 4px 8px; font-size: 12px;">Edit</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <p>No incidents found. <a href="/Incidents/Create">Create the first incident</a></p>
+        </div>
+    }
+</main>

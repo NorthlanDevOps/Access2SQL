@@ -1,0 +1,5 @@
+SELECT IncidentType.IncidentType, IIf([total of id] Is Null,0,[total of id]) AS [Total Of ID1], IIf([Jan] Is Null,0,[jan]) AS Jan1, IIf([Feb] Is Null,0,[feb]) AS Feb1, IIf([Mar] Is Null,0,[Mar]) AS Mar1, IIf([apr] Is Null,0,[Apr]) AS Apr1, IIf([may] Is Null,0,[May]) AS May1, IIf([jun] Is Null,0,[jun]) AS Jun1, IIf([jul] Is Null,0,[jul]) AS Jul1, IIf([aug] Is Null,0,[aug]) AS Aug1, IIf([sep] Is Null,0,[sep]) AS Sep1, IIf([oct] Is Null,0,[oct]) AS Oct1, IIf([nov] Is Null,0,[nov]) AS Nov1, IIf([dec] Is Null,0,[dec]) AS Dec1
+FROM IncidentDetails_Crosstab RIGHT JOIN IncidentType ON IncidentDetails_Crosstab.CriminalIncidentType=IncidentType.IncidentType
+WHERE (((IncidentType.TypeNumber)="1"))
+GROUP BY IncidentType.IncidentType, IIf([total of id] Is Null,0,[total of id]), IIf([Jan] Is Null,0,[jan]), IIf([Feb] Is Null,0,[feb]), IIf([Mar] Is Null,0,[Mar]), IIf([apr] Is Null,0,[Apr]), IIf([may] Is Null,0,[May]), IIf([jun] Is Null,0,[jun]), IIf([jul] Is Null,0,[jul]), IIf([aug] Is Null,0,[aug]), IIf([sep] Is Null,0,[sep]), IIf([oct] Is Null,0,[oct]), IIf([nov] Is Null,0,[nov]), IIf([dec] Is Null,0,[dec]);
+

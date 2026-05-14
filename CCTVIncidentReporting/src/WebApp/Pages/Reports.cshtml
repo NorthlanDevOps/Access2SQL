@@ -1,0 +1,102 @@
+@page
+@using WebApp.Pages
+@model ReportsModel
+@{
+    ViewData["Title"] = "Reports";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>Reports & Analytics</h1>
+        <p class="subtitle">View incident statistics and summaries</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px;">
+        <div style="background: white; padding: 20px; border: 1px solid #ddd; border-radius: 8px; text-align: center;">
+            <div style="font-size: 32px; font-weight: bold; color: #0066cc;">@Model.TotalIncidents</div>
+            <div style="color: #666; margin-top: 8px;">Total Incidents</div>
+        </div>
+        <div style="background: white; padding: 20px; border: 1px solid #ddd; border-radius: 8px; text-align: center;">
+            <div style="font-size: 32px; font-weight: bold; color: #f44;">@Model.PendingIncidents</div>
+            <div style="color: #666; margin-top: 8px;">Pending Action</div>
+        </div>
+        <div style="background: white; padding: 20px; border: 1px solid #ddd; border-radius: 8px; text-align: center;">
+            <div style="font-size: 32px; font-weight: bold; color: #0a0;">@Model.ConfirmedIncidents</div>
+            <div style="color: #666; margin-top: 8px;">Confirmed</div>
+        </div>
+    </div>
+
+    <h2 style="margin-top: 32px; margin-bottom: 16px;">Incidents by Type</h2>
+    @if (Model.IncidentsByType.Any())
+    {
+        <div style="background: white; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 32px;">
+            <table style="width: 100%;">
+                <thead>
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <th style="text-align: left; padding: 12px 0;">Type</th>
+                        <th style="text-align: right; padding: 12px 0;">Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.IncidentsByType.OrderByDescending(x => x.Value))
+                    {
+                        <tr style="border-bottom: 1px solid #f0f0f0;">
+                            <td style="padding: 12px 0;">@item.Key</td>
+                            <td style="text-align: right; padding: 12px 0;">@item.Value</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    <h2 style="margin-bottom: 16px;">Incidents by Operator</h2>
+    @if (Model.IncidentsByOperator.Any())
+    {
+        <div style="background: white; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 32px;">
+            <table style="width: 100%;">
+                <thead>
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <th style="text-align: left; padding: 12px 0;">Operator</th>
+                        <th style="text-align: right; padding: 12px 0;">Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.IncidentsByOperator.OrderByDescending(x => x.Value))
+                    {
+                        <tr style="border-bottom: 1px solid #f0f0f0;">
+                            <td style="padding: 12px 0;">@item.Key</td>
+                            <td style="text-align: right; padding: 12px 0;">@item.Value</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    <h2 style="margin-bottom: 16px;">Incidents by Area</h2>
+    @if (Model.IncidentsByArea.Any())
+    {
+        <div style="background: white; border: 1px solid #ddd; border-radius: 8px; padding: 16px;">
+            <table style="width: 100%;">
+                <thead>
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <th style="text-align: left; padding: 12px 0;">Area</th>
+                        <th style="text-align: right; padding: 12px 0;">Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.IncidentsByArea.OrderByDescending(x => x.Value))
+                    {
+                        <tr style="border-bottom: 1px solid #f0f0f0;">
+                            <td style="padding: 12px 0;">@item.Key</td>
+                            <td style="text-align: right; padding: 12px 0;">@item.Value</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</main>

@@ -1,0 +1,73 @@
+@page
+@using WebApp.Pages.Admin.Areas
+@model AreasIndexModel
+@{
+    ViewData["Title"] = "Manage Areas";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>Areas</h1>
+        <p class="subtitle">Manage geographic areas and zones</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <div style="flex: 1;">
+            <form method="get" style="display: flex; gap: 12px;">
+                <input type="search" name="searchString" placeholder="Search areas..." 
+                       value="@Model.SearchString" style="flex: 1; max-width: 300px;" />
+                <button type="submit" class="btn btn-primary">Search</button>
+                @if (!string.IsNullOrEmpty(Model.SearchString))
+                {
+                    <a href="/Admin/Areas/Index" class="btn">Clear</a>
+                }
+            </form>
+        </div>
+        <a href="/Admin/Areas/Create" class="btn btn-primary">+ New Area</a>
+    </div>
+
+    @if (Model.Areas != null && Model.Areas.Any())
+    {
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var area in Model.Areas)
+                    {
+                        <tr>
+                            <td>@area.Name</td>
+                            <td>@(area.Code ?? "-")</td>
+                            <td>
+                                <span class="status-badge @(area.Active ? "active" : "inactive")">
+                                    @(area.Active ? "Active" : "Inactive")
+                                </span>
+                            </td>
+                            <td>
+                                <div style="display: flex; gap: 8px;">
+                                    <a href="/Admin/Areas/Edit?id=@area.Id" class="btn btn-sm">Edit</a>
+                                    <a href="/Admin/Areas/Index?handler=delete&id=@area.Id" class="btn btn-sm btn-danger" 
+                                       onclick="return confirm('Are you sure you want to delete this area?');">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div style="padding: 40px; text-align: center; color: #666;">
+            <p>No areas found. <a href="/Admin/Areas/Create">Create one</a></p>
+        </div>
+    }
+</main>

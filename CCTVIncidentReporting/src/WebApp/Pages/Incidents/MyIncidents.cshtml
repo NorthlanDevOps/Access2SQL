@@ -1,0 +1,77 @@
+@page
+@using WebApp.Pages.Incidents
+@model MyIncidentsModel
+@{
+    ViewData["Title"] = "My Incidents";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>My Incidents</h1>
+        <p class="subtitle">Incidents assigned to you</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px;">
+        <div style="background: white; padding: 20px; border: 1px solid #ddd; border-radius: 8px; text-align: center;">
+            <div style="font-size: 32px; font-weight: bold; color: #0066cc;">@(Model.Results?.Count ?? 0)</div>
+            <div style="color: #666; margin-top: 8px;">Total Assigned</div>
+        </div>
+        <div style="background: white; padding: 20px; border: 1px solid #ddd; border-radius: 8px; text-align: center;">
+            <div style="font-size: 32px; font-weight: bold; color: #f44;">@Model.PendingCount</div>
+            <div style="color: #666; margin-top: 8px;">Pending Action</div>
+        </div>
+    </div>
+
+    @if (Model.Results?.Any() == true)
+    {
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Area</th>
+                        <th>Status</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var incident in Model.Results)
+                    {
+                        <tr>
+                            <td>@incident.Date.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>@incident.IncidentType</td>
+                            <td>@incident.Area</td>
+                            <td>
+                                @if (string.IsNullOrEmpty(incident.Action))
+                                {
+                                    <span style="background: #fff5f5; color: #d1242f; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Pending</span>
+                                }
+                                else
+                                {
+                                    <span style="background: #f0f9ff; color: #0066cc; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Confirmed</span>
+                                }
+                            </td>
+                            <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@incident.Description</td>
+                            <td>
+                                <div style="display: flex; gap: 8px;">
+                                    <a href="/Incidents/Details?id=@incident.Id" class="btn btn-sm">View</a>
+                                    <a href="/Incidents/Edit?id=@incident.Id" class="btn btn-sm">Edit</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div style="padding: 40px; text-align: center; background: white; border-radius: 8px; color: #666;">
+            <p>You have no incidents assigned.</p>
+        </div>
+    }
+</main>

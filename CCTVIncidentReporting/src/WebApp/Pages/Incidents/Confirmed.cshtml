@@ -1,0 +1,64 @@
+@page
+@using WebApp.Pages.Incidents
+@model ConfirmedModel
+@{
+    ViewData["Title"] = "Confirmed Incidents";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>Confirmed Incidents</h1>
+        <p class="subtitle">Incidents with recorded action and resolution</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <a href="/Incidents/Create" class="btn btn-primary">+ New Incident</a>
+    </div>
+
+    @if (Model.Incidents != null && Model.Incidents.Any())
+    {
+        <div style="margin-bottom: 12px; color: #666;">
+            Showing @Model.Incidents.Count confirmed incident(s)
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Area</th>
+                        <th>Operator</th>
+                        <th>Action</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var incident in Model.Incidents)
+                    {
+                        <tr>
+                            <td>@incident.Date.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>@incident.IncidentType</td>
+                            <td>@incident.Area</td>
+                            <td>@incident.Operator</td>
+                            <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@incident.Action</td>
+                            <td>
+                                <div style="display: flex; gap: 8px;">
+                                    <a href="/Incidents/Details?id=@incident.Id" class="btn btn-sm">View</a>
+                                    <a href="/Incidents/Edit?id=@incident.Id" class="btn btn-sm">Edit</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div style="padding: 40px; text-align: center; color: #666;">
+            <p>No confirmed incidents found.</p>
+        </div>
+    }
+</main>

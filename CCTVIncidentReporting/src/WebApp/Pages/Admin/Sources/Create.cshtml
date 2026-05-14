@@ -1,0 +1,36 @@
+@page
+@using WebApp.Pages.Admin.Sources
+@model CreateModel
+@{
+    ViewData["Title"] = "Create Source";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>Create Source</h1>
+        <p class="subtitle">Add a new incident source</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="max-width: 600px;">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="IncidentSource.Name">Name *</label>
+                <input asp-for="IncidentSource.Name" type="text" required placeholder="e.g., Phone Call, In-Person, Online" />
+                <span asp-validation-for="IncidentSource.Name" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IncidentSource.Code">Code</label>
+                <input asp-for="IncidentSource.Code" type="text" placeholder="e.g., PHN" />
+                <span asp-validation-for="IncidentSource.Code" class="validation-error"></span>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 24px;">
+                <button type="submit" class="btn btn-primary">Create Source</button>
+                <a href="/Admin/Sources/Index" class="btn">Cancel</a>
+            </div>
+        </form>
+    </div>
+</main>

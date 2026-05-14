@@ -1,0 +1,75 @@
+@page "/Incidents/Monitored/{status?}"
+@using WebApp.Pages.Incidents
+@model MonitoredModel
+@{
+    ViewData["Title"] = "Monitored Incidents";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>Monitored Incidents</h1>
+        <p class="subtitle">Incidents with action recorded</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+        <a href="/Incidents/Monitored" class="btn @(Model.Status == null ? "btn-primary" : "")">All Monitored</a>
+        <a href="/Incidents/Monitored/noaction" class="btn @(Model.Status == "noaction" ? "btn-primary" : "")">No Action Needed</a>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px;">
+        <div style="background: white; padding: 20px; border: 1px solid #ddd; border-radius: 8px; text-align: center;">
+            <div style="font-size: 32px; font-weight: bold; color: #0066cc;">@Model.MonitoredOnlyCount</div>
+            <div style="color: #666; margin-top: 8px;">Monitored</div>
+        </div>
+        <div style="background: white; padding: 20px; border: 1px solid #ddd; border-radius: 8px; text-align: center;">
+            <div style="font-size: 32px; font-weight: bold; color: #f44;">@Model.MonitoredNoActionCount</div>
+            <div style="color: #666; margin-top: 8px;">No Action Needed</div>
+        </div>
+    </div>
+
+    @if (Model.Results?.Any() == true)
+    {
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Area</th>
+                        <th>Operator</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var incident in Model.Results)
+                    {
+                        <tr @(string.IsNullOrEmpty(incident.Action) ? "style=\"background-color: #fff5f5;\"" : "")>
+                            <td>@incident.Date.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>@incident.IncidentType</td>
+                            <td>@incident.Area</td>
+                            <td>@incident.Operator</td>
+                            <td style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@incident.Description</td>
+                            <td style="max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@(incident.Action ?? "-")</td>
+                            <td>
+                                <div style="display: flex; gap: 8px;">
+                                    <a href="/Incidents/Details?id=@incident.Id" class="btn btn-sm">View</a>
+                                    <a href="/Incidents/Edit?id=@incident.Id" class="btn btn-sm">Edit</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div style="padding: 40px; text-align: center; background: white; border-radius: 8px; color: #666;">
+            <p>No monitored incidents found.</p>
+        </div>
+    }
+</main>

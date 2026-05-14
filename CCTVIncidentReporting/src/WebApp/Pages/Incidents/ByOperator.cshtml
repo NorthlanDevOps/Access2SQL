@@ -1,0 +1,104 @@
+@page "{operatorName?}"
+@using WebApp.Pages.Incidents
+@model ByOperatorModel
+@{
+    ViewData["Title"] = "Incidents by Operator";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>Incidents by Operator</h1>
+        <p class="subtitle">View incidents assigned to each operator</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+        @if (Model.Operators != null && Model.Operators.Any())
+        {
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                @foreach (var op in Model.Operators)
+                {
+                    <a href="/Incidents/ByOperator/@op" 
+                       class="filter-badge @(Model.SelectedOperator == op ? "active" : "")">
+                        @op
+                    </a>
+                }
+                @if (!string.IsNullOrEmpty(Model.SelectedOperator))
+                {
+                    <a href="/Incidents/ByOperator" class="filter-badge">Clear</a>
+                }
+            </div>
+        }
+        <a href="/Incidents/Create" class="btn btn-primary">+ New Incident</a>
+    </div>
+
+    @if (Model.Incidents != null && Model.Incidents.Any())
+    {
+        <div style="margin-bottom: 12px; color: #666;">
+            Showing @Model.Incidents.Count incident(s) @(string.IsNullOrEmpty(Model.SelectedOperator) ? "" : $"for {Model.SelectedOperator}")
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Area</th>
+                        <th>Operator</th>
+                        <th>Watch</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var incident in Model.Incidents)
+                    {
+                        <tr>
+                            <td>@incident.Date.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>@incident.IncidentType</td>
+                            <td>@incident.Area</td>
+                            <td>@incident.Operator</td>
+                            <td>@incident.Watch</td>
+                            <td>
+                                <div style="display: flex; gap: 8px;">
+                                    <a href="/Incidents/Details?id=@incident.Id" class="btn btn-sm">View</a>
+                                    <a href="/Incidents/Edit?id=@incident.Id" class="btn btn-sm">Edit</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div style="padding: 40px; text-align: center; color: #666;">
+            <p>No incidents found.</p>
+        </div>
+    }
+</main>
+
+<style>
+.filter-badge {
+    display: inline-block;
+    padding: 8px 12px;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.filter-badge:hover {
+    background: #e0e0e0;
+}
+
+.filter-badge.active {
+    background: #0066cc;
+    color: white;
+    border-color: #0066cc;
+}
+</style>

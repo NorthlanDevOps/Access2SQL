@@ -1,0 +1,36 @@
+@page
+@using WebApp.Pages.Admin.IncidentTypes
+@model CreateModel
+@{
+    ViewData["Title"] = "Create Incident Type";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>Create Incident Type</h1>
+        <p class="subtitle">Add a new incident category</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="max-width: 600px;">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="IncidentType.Name">Name *</label>
+                <input asp-for="IncidentType.Name" type="text" required placeholder="e.g., Theft, Assault, Vandalism" />
+                <span asp-validation-for="IncidentType.Name" class="validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IncidentType.Code">Code</label>
+                <input asp-for="IncidentType.Code" type="text" placeholder="e.g., THF" />
+                <span asp-validation-for="IncidentType.Code" class="validation-error"></span>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 24px;">
+                <button type="submit" class="btn btn-primary">Create Type</button>
+                <a href="/Admin/IncidentTypes/Index" class="btn">Cancel</a>
+            </div>
+        </form>
+    </div>
+</main>

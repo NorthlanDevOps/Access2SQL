@@ -1,0 +1,78 @@
+@page
+@using WebApp.Pages
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>CCTV Incident Reporting System</h1>
+        <p class="subtitle">Manage and track CCTV incidents across multiple areas</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div class="dashboard-grid">
+        <a href="/Incidents/Index" class="dashboard-card">
+            <div class="card-icon">📋</div>
+            <h2>All Incidents</h2>
+            <p>View and manage all reported incidents</p>
+        </a>
+
+        <a href="/Incidents/Create" class="dashboard-card">
+            <div class="card-icon">➕</div>
+            <h2>Report Incident</h2>
+            <p>Create a new incident report</p>
+        </a>
+
+        <a href="/Admin/Index" class="dashboard-card">
+            <div class="card-icon">⚙️</div>
+            <h2>Administration</h2>
+            <p>Manage areas, operators, and settings</p>
+        </a>
+
+        <a href="/Reports/Index" class="dashboard-card">
+            <div class="card-icon">📊</div>
+            <h2>Reports</h2>
+            <p>View incident analytics and statistics</p>
+        </a>
+    </div>
+
+    <section class="recent-activity">
+        <h2>Recent Incidents</h2>
+        @if (Model.RecentIncidents != null && Model.RecentIncidents.Any())
+        {
+            <div class="incidents-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Area</th>
+                            <th>Operator</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var incident in Model.RecentIncidents.Take(5))
+                        {
+                            <tr>
+                                <td>@incident.Date.ToString("yyyy-MM-dd HH:mm")</td>
+                                <td><span class="badge">@incident.IncidentType</span></td>
+                                <td>@incident.Area</td>
+                                <td>@incident.Operator</td>
+                                <td><a href="/Incidents/Details/@incident.Id">View</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p class="empty-state">No incidents recorded yet.</p>
+        }
+    </section>
+</main>

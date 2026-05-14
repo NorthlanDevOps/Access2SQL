@@ -1,0 +1,96 @@
+@page "{id}"
+@using WebApp.Pages.Incidents
+@model EditModel
+@{
+    ViewData["Title"] = "Edit Incident";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>Edit Incident</h1>
+        <p class="subtitle">Modify incident report details</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    @if (Model.Incident == null)
+    {
+        <div class="alert alert-error">
+            <p>Incident not found.</p>
+        </div>
+    }
+    else
+    {
+        <div style="max-width: 600px;">
+            <form method="post">
+                <input type="hidden" asp-for="Incident.Id" />
+                <input type="hidden" asp-for="Incident.CreatedAt" />
+
+                <div class="form-group">
+                    <label asp-for="Incident.Date">Date & Time</label>
+                    <input asp-for="Incident.Date" type="datetime-local" required />
+                    <span asp-validation-for="Incident.Date"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Incident.IncidentType">Incident Type</label>
+                    <select asp-for="Incident.IncidentType" asp-items="Model.IncidentTypes" required>
+                        <option value="">-- Select Type --</option>
+                    </select>
+                    <span asp-validation-for="Incident.IncidentType"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Incident.Area">Area</label>
+                    <select asp-for="Incident.Area" asp-items="Model.Areas" required>
+                        <option value="">-- Select Area --</option>
+                    </select>
+                    <span asp-validation-for="Incident.Area"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Incident.SubArea">Sub Area</label>
+                    <input asp-for="Incident.SubArea" type="text" required />
+                    <span asp-validation-for="Incident.SubArea"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Incident.Watch">Watch</label>
+                    <select asp-for="Incident.Watch" asp-items="Model.Watches" required>
+                        <option value="">-- Select Watch --</option>
+                    </select>
+                    <span asp-validation-for="Incident.Watch"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Incident.Operator">Operator</label>
+                    <select asp-for="Incident.Operator" asp-items="Model.Operators" required>
+                        <option value="">-- Select Operator --</option>
+                    </select>
+                    <span asp-validation-for="Incident.Operator"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Incident.Description">Description</label>
+                    <textarea asp-for="Incident.Description" placeholder="Enter incident details..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Incident.Action">Action Taken</label>
+                    <textarea asp-for="Incident.Action" placeholder="Describe actions taken..."></textarea>
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a href="/Incidents/Details/@Model.Incident.Id" class="btn">Cancel</a>
+                </div>
+            </form>
+        </div>
+    }
+</main>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

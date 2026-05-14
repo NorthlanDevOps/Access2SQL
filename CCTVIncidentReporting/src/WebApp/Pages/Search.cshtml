@@ -1,0 +1,144 @@
+@page
+@using WebApp.Pages
+@model SearchModel
+@{
+    ViewData["Title"] = "Search Incidents";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>Advanced Search</h1>
+        <p class="subtitle">Search and filter incidents with multiple criteria</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="background: white; border: 1px solid #ddd; border-radius: 8px; padding: 24px; margin-bottom: 32px;">
+        <form method="get" style="display: grid; gap: 16px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+                <div class="form-group" style="margin: 0;">
+                    <label for="q">Text Search</label>
+                    <input type="search" id="q" name="q" placeholder="Search incident description, type, area..." value="@Model.Query" />
+                </div>
+
+                <div class="form-group" style="margin: 0;">
+                    <label for="type">Incident Type</label>
+                    <select id="type" name="type">
+                        <option value="">-- All Types --</option>
+                        @foreach (var t in (Model.IncidentTypes ?? new List<string>()))
+                        {
+                            @if (Model.SelectedType == t)
+                            {
+                                <option value="@t" selected>@t</option>
+                            }
+                            else
+                            {
+                                <option value="@t">@t</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin: 0;">
+                    <label for="area">Area</label>
+                    <select id="area" name="area">
+                        <option value="">-- All Areas --</option>
+                        @foreach (var a in (Model.Areas ?? new List<string>()))
+                        {
+                            @if (Model.SelectedArea == a)
+                            {
+                                <option value="@a" selected>@a</option>
+                            }
+                            else
+                            {
+                                <option value="@a">@a</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin: 0;">
+                    <label for="op">Operator</label>
+                    <select id="op" name="op">
+                        <option value="">-- All Operators --</option>
+                        @foreach (var o in (Model.Operators ?? new List<string>()))
+                        {
+                            @if (Model.SelectedOperator == o)
+                            {
+                                <option value="@o" selected>@o</option>
+                            }
+                            else
+                            {
+                                <option value="@o">@o</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin: 0;">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate" name="startDate" value="@Model.StartDate?.ToString("yyyy-MM-dd")" />
+                </div>
+
+                <div class="form-group" style="margin: 0;">
+                    <label for="endDate">End Date</label>
+                    <input type="date" id="endDate" name="endDate" value="@Model.EndDate?.ToString("yyyy-MM-dd")" />
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 12px;">
+                <button type="submit" class="btn btn-primary">Search</button>
+                <a href="/Search" class="btn">Clear</a>
+            </div>
+        </form>
+    </div>
+
+    @if (Model.Results != null)
+    {
+        <div style="margin-bottom: 12px; color: #666;">
+            Found @Model.Results.Count incident(s)
+        </div>
+
+        @if (Model.Results.Any())
+        {
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Area</th>
+                            <th>Operator</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var incident in Model.Results)
+                        {
+                            <tr>
+                                <td>@incident.Date.ToString("yyyy-MM-dd HH:mm")</td>
+                                <td>@incident.IncidentType</td>
+                                <td>@incident.Area</td>
+                                <td>@incident.Operator</td>
+                                <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@incident.Description</td>
+                                <td>
+                                    <div style="display: flex; gap: 8px;">
+                                        <a href="/Incidents/Details?id=@incident.Id" class="btn btn-sm">View</a>
+                                        <a href="/Incidents/Edit?id=@incident.Id" class="btn btn-sm">Edit</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div style="padding: 40px; text-align: center; color: #666;">
+                <p>No incidents match your search criteria.</p>
+            </div>
+        }
+    }
+</main>

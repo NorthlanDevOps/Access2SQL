@@ -1,0 +1,26 @@
+@page
+@using WebApp.Pages
+@model ErrorModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="page-header">
+    <div class="container-wide">
+        <h1>An Error Occurred</h1>
+        <p class="subtitle">Something went wrong processing your request</p>
+    </div>
+</div>
+
+<main class="container-wide">
+    <div style="background: white; border: 1px solid #ff6b6b; border-radius: 6px; padding: 24px; max-width: 600px;">
+        <div class="alert alert-error">
+            @if (Model.ShowRequestId)
+            {
+                <p>Request ID: <code>@Model.RequestId</code></p>
+            }
+            <p>An unexpected error has occurred. Please try again or contact support if the problem persists.</p>
+        </div>
+        <a href="/" class="btn btn-primary">Return to Home</a>
+    </div>
+</main>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CCTV Incident Reporting</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="site-header">
+        <div class="navbar-container container-wide navbar">
+            <a class="navbar-brand" href="/">CCTV Incident Reporting</a>
+            <nav class="navbar-nav">
+                <a href="/">Home</a>
+                <a href="/Incidents/Index">Incidents</a>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a href="/Incidents/MyIncidents">My Incidents</a>
+                }
+                <a href="/Reports/Index">Reports</a>
+                <a href="/Search">Search</a>
+                <a href="/Admin/Index">Admin</a>
+            </nav>
+            <div style="display: flex; align-items: center; gap: 16px;">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <span style="color: #666; font-size: 14px;">@User.Identity.Name</span>
+                    <form method="post" action="/Identity/Account/Logout" style="margin: 0;">
+                        <button type="submit" class="btn" style="padding: 6px 12px; font-size: 14px;">Logout</button>
+                    </form>
+                }
+                else
+                {
+                    <a href="/Identity/Account/Login" class="btn" style="padding: 6px 12px; font-size: 14px;">Login</a>
+                }
+            </div>
+        </div>
+    </header>
+
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer">
+        <div class="container-wide">
+            © @DateTime.Now.Year CCTV Incident Reporting
+        </div>
+    </footer>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
